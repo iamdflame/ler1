@@ -1,6 +1,8 @@
 # secrets — never commit
 .env
 wallet.json
+capture/
+.railway/
 *.keypair.json
 
 # runtime state

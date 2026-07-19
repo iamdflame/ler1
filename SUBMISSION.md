@@ -3,7 +3,7 @@
 **Track:** Consumer & Fan Experiences
 **One-liner:** The World Cup broadcast built from pure data — a living pitch, a synthesized crowd, TTS commentary, and the global market as narrator, for the billions of fans who can't watch the match they care about.
 
-- **Live app:** https://super-fiesta-vpp49g444496c696x-8080.app.github.dev — no wallet, no signup, no credentials
+- **Live app:** https://roarline-production.up.railway.app — no wallet, no signup, no credentials
 - **Demo video:** *link goes here* (script: [DEMO-SCRIPT.md](DEMO-SCRIPT.md))
 - **On-chain, verifiable now:** [program deployed on devnet](https://explorer.solana.com/address/6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy?cluster=devnet) · [our TxLINE subscription tx](https://explorer.solana.com/tx/4UWYVawyj3eakTTRyWwsp6gWWmJVe9aSQyzG2ZZvbKBwQq3Q482dvWhMbaecngkUUjQcCVZx4YP2oPo1vjaHphe9?cluster=devnet) · 4 confirmed MomentReceipts, e.g. [the 0–2 goal](https://explorer.solana.com/tx/3mogoKDhXKUrK7tCTZhcDHSau71SLo55SDX4KonpX5zHarKCPqmRhpgJzAKG2WRnKBGA6EVxptvFZiTFWNhNk9mb?cluster=devnet) and [the VAR-reversal correction](https://explorer.solana.com/tx/35GFE9rhKV5xe512KxPKqX9hb6BkbmnHzGMsseVnNH7qTgEota1zSX6AiVuUNRQ8ccXHJbhZ2MxrJFGVnwUfALWh?cluster=devnet) — full table in [README](README.md)
 - **Feel the decisive 90 seconds:** open the live app, press play — goal, market swing, VAR reversal, final whistle, all from authentic TxLINE data
