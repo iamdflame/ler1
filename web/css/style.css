@@ -98,6 +98,34 @@ button { font-family: inherit; cursor: pointer; }
 .on-air-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--hot); box-shadow: 0 0 12px var(--hot); animation: pulse 1.6s infinite; }
 @keyframes pulse { 50% { opacity: 0.45; } }
 
+/* ── on-chain proof strip ──────────────────────────────────────────────── */
+.chain-dot { width: 8px; height: 8px; border-radius: 50%; background: #9d7bff; box-shadow: 0 0 12px #9d7bff; }
+.proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.proof-card {
+  display: flex; flex-direction: column; gap: 7px; padding: 15px 16px;
+  border: 1px solid #241f38; border-radius: var(--radius); text-decoration: none;
+  background: linear-gradient(160deg, #131020, #0b0d14 70%);
+  transition: transform .15s, border-color .15s;
+}
+.proof-card:hover { transform: translateY(-2px); border-color: #9d7bff; }
+.proof-card .pc-k { font-family: var(--font-m); font-size: 9.5px; font-weight: 600; letter-spacing: 1px; color: #8f7dc9; }
+.proof-card .pc-v { font-family: var(--font-m); font-size: 13px; color: var(--text); }
+.proof-card .pc-v::after { content: " ↗"; color: #6a5aa8; font-size: 11px; }
+.proof-card .pc-d { color: var(--mut); font-size: 11.5px; line-height: 1.45; }
+.proof-card .pc-d b { color: #c9bdf2; font-weight: 600; }
+.proof-note { margin-top: 12px; color: var(--dim); font-size: 11.5px; line-height: 1.55; max-width: 720px; }
+.proof-note code { font-family: var(--font-m); font-size: 10.5px; color: var(--mut); }
+
+/* ── broadcast feature row ─────────────────────────────────────────────── */
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 12px; }
+.feature {
+  display: flex; flex-direction: column; gap: 6px; padding: 15px 16px;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel);
+}
+.feature .f-ico { font-size: 20px; }
+.feature b { font-size: 14px; letter-spacing: -0.2px; }
+.feature span:last-child { color: var(--mut); font-size: 12px; line-height: 1.5; }
+
 .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
 .match-card {
   display: block; width: 100%; text-align: left; border: 1px solid var(--line); border-radius: var(--radius);
