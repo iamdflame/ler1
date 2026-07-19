@@ -4,6 +4,21 @@
 
 **Built for the TxODDS × Solana World Cup Hackathon · Consumer & Fan Experiences track.**
 
+| | |
+|---|---|
+| **Live app** | https://super-fiesta-vpp49g444496c696x-8080.app.github.dev — no wallet, no signup, no credentials |
+| **Demo video** | *link goes here* — script at [DEMO-SCRIPT.md](DEMO-SCRIPT.md) |
+| **On-chain, verifiable now** | program [`6d1Se4dj…B32HFy`](https://explorer.solana.com/address/6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy?cluster=devnet) deployed on devnet · our own TxLINE [subscription tx](https://explorer.solana.com/tx/4UWYVawyj3eakTTRyWwsp6gWWmJVe9aSQyzG2ZZvbKBwQq3Q482dvWhMbaecngkUUjQcCVZx4YP2oPo1vjaHphe9?cluster=devnet) · **4 confirmed MomentReceipts** (table below) |
+| **Feel the decisive 90 seconds** | open the live app, press play: goal → market swing → second goal → VAR reversal → final whistle |
+
+**Authenticity:** everything on the judge path is reconstructed from an authentic public TxLINE World Cup capture (France 0–2 Spain), pinned by commit and SHA-256, replayed through a deterministic hash-chained ledger. No simulated data, no seeded metrics.
+
+**Three measured results** (full records in [evidence/](evidence/)):
+
+1. **Four confirmed on-chain Proof-of-Broadcast receipts** — each atomically CPI-verifies its goal against TxLINE's oracle (`Evaluate predicate to: true`) before the receipt PDA is written, including one linked VAR-reversal correction. [Example transaction.](https://explorer.solana.com/tx/3mogoKDhXKUrK7tCTZhcDHSau71SLo55SDX4KonpX5zHarKCPqmRhpgJzAKG2WRnKBGA6EVxptvFZiTFWNhNk9mb?cluster=devnet)
+2. **41.8% fewer serialized bytes** in low-data mode on the 90-second cut (76,450 → 44,504 bytes); **38.6% fewer** across the full 239-minute fixture (852,314 → 523,137 bytes). Measured on real connections.
+3. **Feed ingest → deterministic package in p50 0 ms / p95 1 ms** (26 samples from the running process), with bit-identical hash-chained replay determinism across runs.
+
 ---
 
 Three billion people follow the World Cup. At any given kick-off, most of them **cannot watch it** — they're at work, on a bus, in a country without broadcast rights, or on a data plan that won't stream video. What they get today is a static `1–0` push notification.
@@ -42,7 +57,7 @@ Open `/evidence` for measurements from the current process and `/publisher-demo`
 - Deterministic package-body JSON SHA-256: `83cc7c4266f44a2272f80deb4bcecbc97be997939ac8bc9041b233728df3c25c` (the exact generated JSON bytes with the top-level `packageHash` field omitted).
 - The 0–3 state remains in history; the later 0–2 correction links to and supersedes that package instead of deleting it.
 - Three matching signatures and proof coordinates are preserved as archived proof-log records in `danySSG/moment-mints` commit `2f10829f4a4e95c571a72b43eada1088c63642bd`; the pinned proof-log SHA-256 is `6810cad65784e3a1c79b642a33bb6642ca655e88ab4483fc2aca828bf0f1ff46`.
-- Current devnet RPC does not return those historical transactions. They are presented as commit-pinned archive evidence—not as current chain verification or confirmed custom receipts.
+- Current devnet RPC does not return those third-party historical transactions; they are presented as commit-pinned archive evidence. Our **own** receipts for the same four moments are confirmed and retrievable on devnet right now — see the table below.
 
 The build script at [scripts/build-hero-replay.mjs](scripts/build-hero-replay.mjs) downloads the pinned inputs, verifies both source-file hashes plus the external proof-log hash and selected records, and reconstructs the director cut.
 
@@ -84,9 +99,20 @@ Available source modes are `hero` (default authentic package), `txline` (live AP
 - **Every assumption about feed field names lives in [server/txline/normalize.mjs](server/txline/normalize.mjs)** (case-tolerant, shape-tolerant), so adapting to feed nuances is a one-file change. Raw messages are inspectable at `/api/debug/raw`.
 - Finished fixtures vanish from `/api/fixtures/snapshot`, so live mode persists discovered fixture metadata to `data/fixtures.json`. Replay availability still follows TxLINE's historical API window; the pinned judge package is self-contained.
 
-### Proof-of-Broadcast program status
+### Proof-of-Broadcast program status — deployed, receipts confirmed
 
-[programs/roarline-receipts/src/lib.rs](programs/roarline-receipts/src/lib.rs) atomically CPI-calls TxLINE `validate_stat`, requires an exact-equality verdict, and writes a PDA addressed by `['moment', broadcaster, package_hash]`. Corrections match the supplied prior hash to the prior receipt and link both accounts without deleting history. The CPI proves fixture/stat/value; sequence, timestamps, and off-chain hashes remain broadcaster metadata with explicit ordering, batch, and Solana Clock constraints. With Anchor CLI 0.31.1 and Agave 2.1.0/platform-tools v1.43 on `PATH`, `npm run build:receipt` reproduces the 265,656-byte SBF binary and verifies SHA-256 `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63`; Rust tests pass. The script builds the key-independent ELF and source-derived IDL without generating or requiring the ignored deployment keypair. **The program is not claimed as deployed**: `ROARLINE_RECEIPTS` remains disabled, so the UI labels archived proof records and fetched bundles separately from confirmed receipts.
+[programs/roarline-receipts/src/lib.rs](programs/roarline-receipts/src/lib.rs) atomically CPI-calls TxLINE `validate_stat`, requires an exact-equality verdict, and writes a PDA addressed by `['moment', broadcaster, package_hash]`. Corrections match the supplied prior hash to the prior receipt and link both accounts without deleting history. The CPI proves fixture/stat/value; sequence, timestamps, and off-chain hashes remain broadcaster metadata with explicit ordering, batch, and Solana Clock constraints.
+
+The program is **deployed on devnet** as [`6d1Se4dj…B32HFy`](https://explorer.solana.com/address/6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy?cluster=devnet) (deploy tx [`4yHwNHLe…38AbWL`](https://explorer.solana.com/tx/4yHwNHLeDXPLRYUsERvSpiYKmDnEBU1gRmSGdtrxVBkiNP5PMBh2QsYucSVNiC7QoHrhrFveowwNvibHcM38AbWL?cluster=devnet)), and on 2026-07-19 it minted four receipts for the France–Spain moments from real `stat-validation` bundles fetched with our own on-chain TxLINE subscription ([subscribe tx](https://explorer.solana.com/tx/4UWYVawyj3eakTTRyWwsp6gWWmJVe9aSQyzG2ZZvbKBwQq3Q482dvWhMbaecngkUUjQcCVZx4YP2oPo1vjaHphe9?cluster=devnet)). Every transaction shows the full CPI: our program → TxLINE `ValidateStat` → `Evaluate predicate to: true` → receipt PDA written.
+
+| Moment | seq | Receipt transaction (devnet) |
+|---|---:|---|
+| GOAL — penalty, 0–1 Spain | 221 | [`5JAYBk77…nLFi1`](https://explorer.solana.com/tx/5JAYBk77sJF38e4hiSTdEmSqNf64ZPiWK4fDijMMZ9m8TtKwhbscpcE5Em5PusSpvpi3eFSXKkyVMsn3j75nLFi1?cluster=devnet) |
+| GOAL — 0–2 Spain | 618 | [`3mogoKDh…Nk9mb`](https://explorer.solana.com/tx/3mogoKDhXKUrK7tCTZhcDHSau71SLo55SDX4KonpX5zHarKCPqmRhpgJzAKG2WRnKBGA6EVxptvFZiTFWNhNk9mb?cluster=devnet) |
+| GOAL — 0–3, later revoked | 641 | [`3CrQg3Lx…smyoKz`](https://explorer.solana.com/tx/3CrQg3LxJULcKAFZqwQbPWWZNFUXgcJKQbpsE366zx5VtaDwm36tcisgSJwcjecG48xqT3D3HZwYKMx3YRsmyoKz?cluster=devnet) |
+| VAR correction — 0–3 → 0–2, links & supersedes the receipt above | 682 | [`35GFE9rh…UfALWh`](https://explorer.solana.com/tx/35GFE9rhKV5xe512KxPKqX9hb6BkbmnHzGMsseVnNH7qTgEota1zSX6AiVuUNRQ8ccXHJbhZ2MxrJFGVnwUfALWh?cluster=devnet) |
+
+Honesty notes: these receipts were minted while re-broadcasting the archived fixture five days after it was played, so each receipt's broadcaster-reported reaction timestamp is ~4.9 days after its source timestamp — the on-chain record states exactly that, and the CPI-proved source facts are unaffected. Reproducibility: with Anchor CLI 0.31.1 and Agave 2.1.0/platform-tools v1.43 on `PATH`, `npm run build:receipt` reproduces the deployed 265,656-byte SBF binary and verifies SHA-256 `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63` without generating or requiring the deployment keypair; Rust tests pass.
 
 ### Measured evidence
 
@@ -103,7 +129,9 @@ Available source modes are `hero` (default authentic package), `txline` (live AP
 | Low-data serialization | 44,504 bytes (43.46 KiB) · 41.8% fewer bytes |
 | Actual bytes written to measured clients | standard 76,732 · low 44,929 |
 | Ledger | 56 source events (48 score + 8 odds) · 0 duplicate/stale rejections · head `9b9bed363aab3a98e9bcaf94a0bbe16f6d21c7be7c8c2201db77d023f06f7e16` |
-| Proof chain | 3 commit-pinned archived proof-log records · current devnet RPC unavailable · 0 custom receipts confirmed |
+| Proof chain | **4 confirmed custom MomentReceipts on devnet** (table above) · 3 commit-pinned archived third-party proof-log records |
+
+**Full-fixture run — 2026-07-19, the complete 238.8-minute France–Spain recording** ([evidence/full-fixture-run-2026-07-19.json](evidence/full-fixture-run-2026-07-19.json)): whole-capture ledger of 848 entries reproduces head `17c50be9…` bit-identically across runs; the match block through the production room produced 852,314 standard vs 523,137 low-data bytes (**38.6% fewer**), room ledger head `f9affad7…`; the pipeline independently reconverges on the official 0–2 final score. The capture's own gaps are counted, not hidden: 505 missing source sequence numbers out of the 0–1026 range.
 
 The server acknowledgment includes the forwarded browser transport in both directions, browser handling, the frame callback, and the return POST; it is not a one-way network or paint claim. These are environment-specific observations, not universal promises. `/evidence` always shows the current process instead of silently reusing the table. The complete measured record, all 26 package hashes, protocol, and qualifications are committed at [evidence/reference-run-2026-07-19.json](evidence/reference-run-2026-07-19.json).
 

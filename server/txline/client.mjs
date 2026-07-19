@@ -56,7 +56,16 @@ export class TxlineClient {
       const text = await res.text().catch(() => "");
       throw new Error(`GET ${path} → HTTP ${res.status} ${text.slice(0, 160)}`);
     }
-    return res.json();
+    const text = await res.text();
+    // Some batch endpoints (e.g. /api/scores/historical) answer in SSE framing:
+    // repeated `id:`/`data:` lines rather than a JSON body. Detect and unwrap.
+    const trimmed = text.trimStart();
+    if (trimmed.startsWith("data:") || trimmed.startsWith("id:")) {
+      return text.split("\n")
+        .filter((line) => line.startsWith("data:"))
+        .map((line) => JSON.parse(line.slice(5).trim()));
+    }
+    return JSON.parse(text);
   }
 
   // ── data endpoints ─────────────────────────────────────────────────────────

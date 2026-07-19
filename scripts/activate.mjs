@@ -95,9 +95,17 @@ const userTokenAccount = getAssociatedTokenAddressSync(txlMint, payer.publicKey,
 
 const DURATION_WEEKS = 4;
 const SELECTED_LEAGUES = []; // standard free bundle
+// A brand-new wallet has no TxL associated token account yet; the program
+// requires it to exist even for free tiers, so create it idempotently first.
+const { createAssociatedTokenAccountIdempotentInstruction } = splToken;
+const ataIx = createAssociatedTokenAccountIdempotentInstruction(
+  payer.publicKey, userTokenAccount, payer.publicKey, txlMint,
+  TOKEN_2022_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID,
+);
 console.log(`→ 2/4 sending on-chain subscribe(serviceLevel=${serviceLevel}, weeks=${DURATION_WEEKS}) …`);
 const txSig = await program.methods
   .subscribe(serviceLevel, DURATION_WEEKS)
+  .preInstructions([ataIx])
   .accounts({
     user: payer.publicKey,
     pricingMatrix: pricingMatrixPda,
@@ -131,8 +139,16 @@ if (!actRes.ok) {
   console.error("  checklist: same network for origin+program+rpc · same wallet that sent subscribe · fresh JWT from the same host");
   process.exit(1);
 }
-const actBody = await actRes.json().catch(() => null);
-const apiToken = actBody?.token || actBody;
+const actRaw = await actRes.text();
+let actBody = null;
+try { actBody = JSON.parse(actRaw); } catch { actBody = actRaw.trim(); }
+const apiToken = typeof actBody === "string"
+  ? actBody
+  : actBody?.token ?? actBody?.apiToken ?? actBody?.api_token ?? actBody?.data?.token ?? null;
+if (!apiToken || typeof apiToken !== "string" || apiToken === "null") {
+  console.error(`✗ activation succeeded but no token found in response: ${actRaw.slice(0, 400)}`);
+  process.exit(1);
+}
 console.log(`✓ 4/4 API token activated\n`);
 
 // persist into .env

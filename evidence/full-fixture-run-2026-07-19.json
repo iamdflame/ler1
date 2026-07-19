@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-07-19T15:59:57.600Z",
+  "fixtureId": 18237038,
+  "scope": "complete recorded fixture (not the 90-second director cut)",
+  "capture": {
+    "commit": "b3bd417c1e28089c885a5454f654b1caadbde942",
+    "files": [
+      {
+        "name": "scores.jsonl",
+        "url": "https://raw.githubusercontent.com/LightCreator1007/steamline/b3bd417c1e28089c885a5454f654b1caadbde942/fixtures/live-18237038/18237038/scores.jsonl",
+        "sha256": "ae639893e9a2ee0a3d23d0e18f86fbf3d4ee2e378307f62bd3adf68864261f44",
+        "events": 534
+      },
+      {
+        "name": "odds.jsonl",
+        "url": "https://raw.githubusercontent.com/LightCreator1007/steamline/b3bd417c1e28089c885a5454f654b1caadbde942/fixtures/live-18237038/18237038/odds.jsonl",
+        "sha256": "1020eb7d8094fca5b0ec88898496d142c0899bb885f34951b0d2c7b2f3256ab5",
+        "events": 3737
+      }
+    ],
+    "totalSourceEvents": 4271
+  },
+  "wholeCaptureLedger": {
+    "entries": 848,
+    "head": "17c50be9e698a27c6f896f3d02879a9c3b5a2293611c564c5c3283d6fac5f441",
+    "gaps": 258,
+    "missingSequenceNumbers": 505,
+    "capturedSeqRange": [
+      0,
+      1026
+    ],
+    "duplicatesRejected": 0,
+    "staleRejected": 12,
+    "unmappedMessages": 3411,
+    "deterministicAcrossTwoRuns": true
+  },
+  "matchBlockBroadcast": {
+    "note": "complete contiguous match block replayed through the production Room; signal frames tick once per wall-clock second, so signal bytes depend on replay speed — event-driven bytes do not",
+    "replaySpeed": 32,
+    "originalWindow": {
+      "fromTs": 1784048725114,
+      "toTs": 1784063054751,
+      "minutes": 238.8
+    },
+    "sourceEventsInBlock": 4269,
+    "finalScore": {
+      "home": 0,
+      "away": 2
+    },
+    "ledger": {
+      "entries": 846,
+      "head": "f9affad71d72408d5b1ac6a9e49bfecc50b3eb8a88e26800dd6b31bf877fdd1f",
+      "gaps": 258,
+      "duplicatesRejected": 0,
+      "staleRejected": 12
+    },
+    "producedBytes": {
+      "standard": 852314,
+      "lowData": 523137,
+      "reductionPct": 38.6
+    },
+    "clientWrittenBytes": {
+      "standard": 853859,
+      "lowData": 524824,
+      "reductionPct": 38.5
+    },
+    "perEvent": {
+      "signal": {
+        "count": 450,
+        "bytes": 71989,
+        "lowBytes": 7233
+      },
+      "commentary": {
+        "count": 435,
+        "bytes": 177545,
+        "lowBytes": 84429
+      },
+      "moment": {
+        "count": 384,
+        "bytes": 310960,
+        "lowBytes": 139655
+      },
+      "state": {
+        "count": 520,
+        "bytes": 291820,
+        "lowBytes": 291820
+      },
+      "done": {
+        "count": 1,
+        "bytes": 821,
+        "lowBytes": 821
+      }
+    },
+    "eventDrivenBytes": {
+      "standard": 781146,
+      "lowData": 516725,
+      "reductionPct": 33.9,
+      "speedIndependent": true
+    }
+  }
+}

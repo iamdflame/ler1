@@ -26,12 +26,15 @@
 - At ~86s: show the finalised 0–2 frame.
 - > "That was not a scripted score simulation. Every state and consensus-odds movement came from the pinned public capture."
 
-## 2:15 – 2:55 · Correction-aware proof
+## 2:15 – 2:55 · Proof of Broadcast — open the real transaction
 
-- Tap **CARD** on the 0–3 goal, then on the correction.
-- > "The correction does not erase the first package. Both have deterministic SHA-256 identities, and the correction links back with `supersedes`. The drawer opens a commit-pinned external proof-log record for the matching fixture, sequence, stat key and value."
-- Point to **ARCHIVED PROOF-LOG RECORD · CURRENT DEVNET RPC UNAVAILABLE**.
-- > "That wording matters. The archived log preserves the reported signature, but current devnet RPC cannot retrieve it. A fetched live bundle and our custom receipt are separate claims. The Anchor program builds and tests but is not deployed, so ROARLINE never calls this confirmed."
+- Tap **CARD** on the 0–2 goal.
+- > "Every big moment gets a deterministic SHA-256 package identity. And for this goal, that identity is on Solana right now."
+- Switch to the pre-opened tab → **Solana Explorer, devnet**: tx [`3mogoKDh…Nk9mb`](https://explorer.solana.com/tx/3mogoKDhXKUrK7tCTZhcDHSau71SLo55SDX4KonpX5zHarKCPqmRhpgJzAKG2WRnKBGA6EVxptvFZiTFWNhNk9mb?cluster=devnet) — our confirmed receipt for this exact goal (fixture 18237038, seq 618).
+- Scroll to the program logs: point at `Program 6d1Se4dj… invoke` → `Instruction: RecordMoment` → TxLINE oracle `Instruction: ValidateStat` → **`Evaluate predicate to: true`**.
+- > "Our Anchor program refuses to write the receipt unless TxLINE's own on-chain oracle proves — in the same atomic transaction — that Spain's goal count really was 2 at that sequence. Merkle bundle in, CPI verdict out, receipt PDA written."
+- Tap **CARD** on the correction; open [`35GFE9rh…UfALWh`](https://explorer.solana.com/tx/35GFE9rhKV5xe512KxPKqX9hb6BkbmnHzGMsseVnNH7qTgEota1zSX6AiVuUNRQ8ccXHJbhZ2MxrJFGVnwUfALWh?cluster=devnet).
+- > "The VAR reversal doesn't erase history — `record_correction` links and supersedes the revoked goal's receipt on chain. Four receipts exist for this match, minted with our own on-chain TxLINE subscription. The zero-credential replay you're watching claims none of them — statuses are never silently promoted."
 
 ## 2:55 – 3:35 · Accessibility and low data
 
@@ -49,8 +52,8 @@
 
 - Open `/evidence`: show process-local p50/p95 samples, standard/low bytes, ledger head, expected director-cut gaps, package hashes and correction links.
 - > "No seeded vanity metrics. The corrected full run measured 41.8 percent fewer serialized bytes in low-data mode. Browser handler-to-animation-frame callback was 1.3 milliseconds p50 and 2.8 p95—not visual paint. Server write to the matching frame acknowledgment was 208 and 413.3 milliseconds; that includes both forwarded transport legs. Every sample requires an active SSE token and a package actually written to that client."
-- Terminal: flash `npm test`, `cargo test -p roarline-receipts`, and the successful identity-checked `npm run build:receipt` artifact (265,656 bytes; `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63`).
-- > "A SHA-256 ledger precedes every mutation. Counter diffs are source truth. Duplicate and stale updates are rejected. The custom program atomically validates the exact TxLINE fixture, stat key and value before writing a package-addressed receipt. Sequence, timestamps and hashes are broadcaster metadata with explicit on-chain constraints; corrections match the supplied prior hash to the prior receipt."
+- Terminal: flash `npm test`, `cargo test -p roarline-receipts`, and the successful identity-checked `npm run build:receipt` artifact (265,656 bytes; `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63` — the exact binary deployed at `6d1Se4dj…B32HFy`).
+- > "A SHA-256 ledger precedes every mutation. Counter diffs are source truth. Duplicate and stale updates are rejected. The custom program atomically validates the exact TxLINE fixture, stat key and value before writing a package-addressed receipt — you watched it do that on the explorer a minute ago."
 
 ## 4:40 – 5:00 · Close (b-roll: phone in pocket, earphones)
 
@@ -62,7 +65,7 @@
 - [ ] Fresh `node server/index.mjs`; click the authentic hero once and record the complete 90-second sequence
 - [ ] Browser at 390×844 (iPhone frame) for app shots; system audio captured (crowd + TTS!)
 - [ ] Uninterrupted 0–2 → 0–3 → correction to 0–2 sequence on camera
-- [ ] Proof drawer wording visibly distinguishes archived records, fetched bundles, current RPC verification and custom receipt status
+- [ ] Explorer shots: goal receipt tx logs (`ValidateStat` → `Evaluate predicate to: true`) and the correction tx — pre-open both tabs
 - [ ] ES/FR/PT, audio-description, silent+haptics and low-data controls shown
 - [ ] `/publisher-demo` caveat and `/evidence` measurements shown
 - [ ] Terminal shots: `npm test`, Rust tests, SBF artifact hash

@@ -29,7 +29,7 @@ When a package-addressed account already exists, the submitter verifies its stor
 - `npm run build:receipt` uses Anchor CLI 0.31.1 plus Agave 2.1.0/platform-tools v1.43 to build the key-independent ELF and source-derived IDL without a deployment keypair.
 - The script synchronizes `idl/roarline_receipts.json` with `target/idl/roarline_receipts.json` and verifies the 265,656-byte SBF SHA-256 `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63`.
 - Rust unit tests pass.
-- The program is **not claimed as deployed**. `ROARLINE_RECEIPTS` remains off until a funded deployment and confirmed transaction exist; source proofs and custom receipts remain separately labelled.
+- The program is **deployed on devnet** as [`6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy`](https://explorer.solana.com/address/6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy?cluster=devnet) (deploy tx `4yHwNHLeDXPLRYUsERvSpiYKmDnEBU1gRmSGdtrxVBkiNP5PMBh2QsYucSVNiC7QoHrhrFveowwNvibHcM38AbWL`) and has four confirmed MomentReceipts; the transaction table lives in the repository [README](../../README.md). Source proofs and custom receipts remain separately labelled in the UI.
 
 ## Deployment boundary
 

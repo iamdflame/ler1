@@ -3,9 +3,13 @@
 **Track:** Consumer & Fan Experiences
 **One-liner:** The World Cup broadcast built from pure data — a living pitch, a synthesized crowd, TTS commentary, and the global market as narrator, for the billions of fans who can't watch the match they care about.
 
-- **Live app:** *deploy URL goes here* (single container — `Dockerfile` included; Fly/Railway/Render in minutes)
-- **Repo:** this repository
-- **Demo video:** *link goes here* (see [DEMO-SCRIPT.md](DEMO-SCRIPT.md))
+- **Live app:** https://super-fiesta-vpp49g444496c696x-8080.app.github.dev — no wallet, no signup, no credentials
+- **Demo video:** *link goes here* (script: [DEMO-SCRIPT.md](DEMO-SCRIPT.md))
+- **On-chain, verifiable now:** [program deployed on devnet](https://explorer.solana.com/address/6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy?cluster=devnet) · [our TxLINE subscription tx](https://explorer.solana.com/tx/4UWYVawyj3eakTTRyWwsp6gWWmJVe9aSQyzG2ZZvbKBwQq3Q482dvWhMbaecngkUUjQcCVZx4YP2oPo1vjaHphe9?cluster=devnet) · 4 confirmed MomentReceipts, e.g. [the 0–2 goal](https://explorer.solana.com/tx/3mogoKDhXKUrK7tCTZhcDHSau71SLo55SDX4KonpX5zHarKCPqmRhpgJzAKG2WRnKBGA6EVxptvFZiTFWNhNk9mb?cluster=devnet) and [the VAR-reversal correction](https://explorer.solana.com/tx/35GFE9rhKV5xe512KxPKqX9hb6BkbmnHzGMsseVnNH7qTgEota1zSX6AiVuUNRQ8ccXHJbhZ2MxrJFGVnwUfALWh?cluster=devnet) — full table in [README](README.md)
+- **Feel the decisive 90 seconds:** open the live app, press play — goal, market swing, VAR reversal, final whistle, all from authentic TxLINE data
+- **Authenticity:** the judge path replays a hash-pinned public TxLINE capture through a deterministic hash-chained ledger; no simulated data, no seeded metrics
+
+**Three measured results:** 4 confirmed on-chain Proof-of-Broadcast receipts (CPI-verified against TxLINE's oracle) · 41.8% fewer bytes in low-data mode on the 90-second cut and 38.6% across the full 239-minute fixture · ingest→package p50 0 ms / p95 1 ms — details in [evidence/](evidence/)
 
 ---
 
@@ -70,7 +74,7 @@ npm run activate           # on-chain subscribe (wallet.json) → .env token
 npm run live               # real TxLINE broadcasts + archive replays
 ```
 
-Optional custom receipts use [programs/roarline-receipts/src/lib.rs](programs/roarline-receipts/src/lib.rs). With Anchor 0.31.1 and Agave 2.1.0/platform-tools v1.43, `npm run build:receipt` reproduces the 265,656-byte SBF binary and verifies artifact SHA-256 `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63`; it does not require the ignored deployment keypair. The CPI proves fixture/stat/value; participant-oriented stat coordinates are preserved, originals must be positive, and corrections must prove a non-negative lower value. Sequence, source/reaction timing, and off-chain hash commitments are broadcaster-supplied metadata with on-chain batch, clock, mapping, and ordering constraints. The program is **not claimed as deployed**: `ROARLINE_RECEIPTS=0` remains the truthful default. The UI separately labels `ARCHIVED PROOF-LOG RECORD`, `TXLINE PROOF BUNDLE FETCHED`, and `PROOF OF BROADCAST CONFIRMED`; only the last requires a confirmed custom receipt.
+Custom receipts use [programs/roarline-receipts/src/lib.rs](programs/roarline-receipts/src/lib.rs), **deployed on devnet** as `6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy` with four confirmed receipts minted on 2026-07-19 from real `stat-validation` bundles (transaction table in [README](README.md)); each transaction shows the atomic CPI into TxLINE `ValidateStat` evaluating to `true`. With Anchor 0.31.1 and Agave 2.1.0/platform-tools v1.43, `npm run build:receipt` reproduces the deployed 265,656-byte SBF binary and verifies artifact SHA-256 `3ac6bac37a00dc09eb1d5756587fe99e9105512bc77154ba417022e1e779dd63`; it does not require the ignored deployment keypair. The CPI proves fixture/stat/value; participant-oriented stat coordinates are preserved, originals must be positive, and corrections must prove a non-negative lower value. Sequence, source/reaction timing, and off-chain hash commitments are broadcaster-supplied metadata with on-chain batch, clock, mapping, and ordering constraints. The UI separately labels `ARCHIVED PROOF-LOG RECORD`, `TXLINE PROOF BUNDLE FETCHED`, and `PROOF OF BROADCAST CONFIRMED`; only the last requires a confirmed custom receipt.
 
 ## 5 · TxLINE API feedback (what we hit, honestly)
 
@@ -86,7 +90,8 @@ Optional custom receipts use [programs/roarline-receipts/src/lib.rs](programs/ro
 3. **Field-name casing varies across surfaces** (`Seq`/`seq`, `Ts`/`ts`). The docs acknowledge it; a single canonical casing (or a documented per-endpoint table) would delete the most defensive code in every integration, ours included.
 4. **Odds payload shape for the 1X2 consensus** took experimentation — we ship a three-layout tolerant mapper. A one-page "this is exactly what one odds message looks like, field by field" example would have saved the afternoon.
 5. **Historical odds require walking 5-minute interval buckets** (`/api/odds/updates/{d}/{h}/{i}`) and client-side fixture filtering — ~25–30 calls per match replay. A `?fixtureId=` filter (or `/api/odds/historical/{fixtureId}`) would make replay-heavy consumer products dramatically cheaper for both sides.
-6. Small one: guest JWT expiry isn't stated in the response; we renew reactively on 401, which works, but an `expiresAt` would allow proactive renewal.
+6. **`GET /api/scores/historical/{id}` answers a plain GET in SSE framing** (`id:`/`data:` lines) rather than a JSON array; our client sniffs the body and unwraps. Documenting the content type (or honoring `Accept: application/json`) would prevent a guaranteed first-integration parse failure.
+7. Small one: guest JWT expiry isn't stated in the response; we renew reactively on 401, which works, but an `expiresAt` would allow proactive renewal.
 
 None of these blocked the build; all of them cost time a first-week integrator could keep.
 
@@ -95,7 +100,7 @@ None of these blocked the build; all of them cost time a first-week integrator c
 - The default no-credential experience is an authentic public capture, not a simulation. Simulation remains available only through `ROARLINE_SOURCE=sim` and is labelled as such.
 - The pinned hero package is a deterministic director cut, so sequence gaps are expected and exposed in the ledger; they are omitted source frames, not hidden packet loss.
 - In TxLINE live/historical mode, match state and odds come from TxLINE. Proof cards state whether a bundle was fetched; they do not call that a current chain confirmation or proof of footage.
-- Archived proof-log records, fetched live bundles, current RPC verification, and confirmed custom MomentReceipts are four distinct statuses. Only `confirmed` is presented as a successful custom receipt transaction, and none is currently claimed for the judge replay.
+- Archived proof-log records, fetched live bundles, current RPC verification, and confirmed custom MomentReceipts are four distinct statuses. Only `confirmed` is presented as a successful custom receipt transaction. Four such receipts exist on devnet for the France–Spain moments; they were minted while re-broadcasting the archived fixture five days after it was played, and their on-chain reaction timestamps state exactly that (~4.9-day reaction delta). The zero-credential judge replay itself claims no receipt.
 - The publisher page is an integration demonstration, not evidence of a real external pilot.
 - Telemetry is process-local: serialized bytes and server timings are measured internally; render samples must name a real package and carry an active SSE connection token.
 - Team identity display is name/code only; no FIFA marks.
