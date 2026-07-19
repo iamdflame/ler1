@@ -69,4 +69,4 @@
 - [ ] ES/FR/PT, audio-description, silent+haptics and low-data controls shown
 - [ ] `/publisher-demo` caveat and `/evidence` measurements shown
 - [ ] Terminal shots: `npm test`, Rust tests, SBF artifact hash
-- [ ] Upload unlisted YouTube/Loom · link in SUBMISSION.md + Superteam form
+- [x] Upload YouTube · https://youtu.be/_FNnlGS6eZ8 · link in SUBMISSION.md + Superteam form

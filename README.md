@@ -7,7 +7,7 @@
 | | |
 |---|---|
 | **Live app** | https://roarline-production.up.railway.app — no wallet, no signup, no credentials |
-| **Demo video** | *link goes here* — script at [DEMO-SCRIPT.md](DEMO-SCRIPT.md) |
+| **Demo video** | https://youtu.be/_FNnlGS6eZ8 — script at [DEMO-SCRIPT.md](DEMO-SCRIPT.md) |
 | **On-chain, verifiable now** | program [`6d1Se4dj…B32HFy`](https://explorer.solana.com/address/6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy?cluster=devnet) deployed on devnet · our own TxLINE [subscription tx](https://explorer.solana.com/tx/4UWYVawyj3eakTTRyWwsp6gWWmJVe9aSQyzG2ZZvbKBwQq3Q482dvWhMbaecngkUUjQcCVZx4YP2oPo1vjaHphe9?cluster=devnet) · **4 confirmed MomentReceipts** (table below) |
 | **Feel the decisive 90 seconds** | open the live app, press play: goal → market swing → second goal → VAR reversal → final whistle |
 
