@@ -1,0 +1,22 @@
+[package]
+name = "roarline-receipts"
+version = "0.1.0"
+description = "Proof-of-Broadcast receipts: TxLINE validation CPI + correction-linked package commitments"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "roarline_receipts"
+
+[features]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+cpi = ["no-entrypoint"]
+default = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+# Keep Cargo.lock checked in: Anchor's SBF Cargo is older than current
+# Rust-2024 transitive releases permitted by several upstream semver ranges.
+anchor-lang = "=0.31.1"

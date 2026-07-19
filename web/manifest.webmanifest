@@ -1,0 +1,12 @@
+{
+  "name": "ROARLINE — the match, felt",
+  "short_name": "ROARLINE",
+  "description": "The World Cup broadcast built from pure data. Powered by TxLINE on Solana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070a0c",
+  "theme_color": "#070a0c",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

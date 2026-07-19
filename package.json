@@ -1,0 +1,25 @@
+{
+  "name": "roarline",
+  "version": "1.0.0",
+  "description": "ROARLINE — authentic TxLINE match data as a living pitch, synthesized crowd, accessible commentary, hash-linked correction history, and publisher-ready player.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/index.mjs",
+    "demo": "ROARLINE_SOURCE=sim node server/index.mjs",
+    "live": "ROARLINE_SOURCE=txline node server/index.mjs",
+    "activate": "node scripts/activate.mjs",
+    "build:receipt": "node scripts/build-receipt-program.mjs",
+    "judge": "node scripts/judge.mjs",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.31.1",
+    "@solana/spl-token": "^0.4.9",
+    "@solana/web3.js": "^1.95.4",
+    "tweetnacl": "^1.0.3"
+  },
+  "license": "MIT"
+}

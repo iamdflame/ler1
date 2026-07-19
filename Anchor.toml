@@ -1,0 +1,19 @@
+[toolchain]
+anchor_version = "0.31.1"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.devnet]
+roarline_receipts = "6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy"
+
+[programs.mainnet]
+roarline_receipts = "6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy"
+
+[provider]
+cluster = "devnet"
+wallet = "wallet.json"
+
+[scripts]
+test = "cargo test -p roarline-receipts"

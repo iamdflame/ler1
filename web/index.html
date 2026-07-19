@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ROARLINE — the match, felt</title>
+<meta name="description" content="The World Cup broadcast built from pure data. Live pitch, living crowd, the global market as narrator — powered by TxLINE on Solana.">
+<meta property="og:title" content="ROARLINE — the match, felt">
+<meta property="og:description" content="Can't watch the match? Feel it through an authentic broadcast built from pure TxLINE data.">
+<meta name="theme-color" content="#070A0C">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<!-- ══ LOBBY ══════════════════════════════════════════════════════════════ -->
+<main id="lobby" class="view" hidden>
+  <header class="masthead">
+    <div class="brand"><span class="brand-bolt">⚡</span>ROAR<em>LINE</em></div>
+    <div class="tagline">the match, <em>felt</em></div>
+    <p class="pitchline">The World Cup broadcast built from <b>pure data</b>. A living pitch, a breathing crowd,
+    and the world's sharpest market calling the game as source updates arrive — no TV required.</p>
+    <div class="poweredby">match data · <b>TxLINE</b> by TxODDS &nbsp;·&nbsp; qualified proof records · optional receipts on <b>Solana</b></div>
+  </header>
+
+  <div id="mode-banner" class="mode-banner" hidden>
+    <b>DEMO CHANNEL</b> — simulated matches so you can feel the product instantly.
+    Point <code>ROARLINE_SOURCE=txline</code> at your TxLINE credentials for the real tournament.
+  </div>
+
+  <section id="featured-section" class="lobby-section hero-section" hidden>
+    <div class="hero-kicker"><span class="verified-dot"></span> AUTHENTIC TxLINE CAPTURE · 90-SECOND DIRECTOR CUT</div>
+    <h1>The goal that<br><em>happened twice.</em></h1>
+    <p>Spain score. The world market jumps. Another goal arrives—then VAR takes it back.
+      Hear, see and verify the entire correction chain before reading a single architecture slide.</p>
+    <div id="featured-list"></div>
+    <div class="evidence-row">
+      <span><b>56</b> source events</span>
+      <span><b>8</b> real 1X2 movements</span>
+      <span><b>3</b> archived proof-log records</span>
+      <span><b>0</b> video bytes</span>
+    </div>
+    <div id="hero-hash" class="hero-hash"></div>
+  </section>
+
+  <section id="live-section" class="lobby-section">
+    <h2><span class="on-air-dot"></span> ON AIR</h2>
+    <div id="live-list" class="match-grid"></div>
+    <div id="live-empty" class="empty-note" hidden>Nothing on air right now — the archive below replays any match, exactly as it streamed.</div>
+  </section>
+
+  <section class="lobby-section">
+    <h2>UP NEXT</h2>
+    <div id="upcoming-list" class="match-grid"></div>
+  </section>
+
+  <section class="lobby-section">
+    <h2>THE ARCHIVE <span class="h-sub">— available fixtures re-broadcast from the source feed</span></h2>
+    <div id="archive-list" class="match-grid"></div>
+  </section>
+
+  <footer class="lobby-foot">
+    ROARLINE · built for the TxODDS × Solana World Cup Hackathon ·
+    <a href="https://github.com/iamdflame/ler1" rel="noopener">source</a> ·
+    <a href="/evidence">evidence</a> ·
+    <a href="/publisher-demo">publisher embed</a> ·
+    <a href="/api/health" rel="noopener">status</a>
+  </footer>
+</main>
+
+<!-- ══ MATCH ROOM ═════════════════════════════════════════════════════════ -->
+<main id="room" class="view" hidden>
+  <header class="room-top">
+    <button id="back-btn" class="ghost-btn" aria-label="back">‹</button>
+    <div class="brand small">ROAR<em>LINE</em></div>
+    <span id="room-mode" class="mode-chip">LIVE</span>
+    <div class="top-actions">
+      <label class="sr-only" for="language-select">Commentary language</label>
+      <select id="language-select" class="control-select" title="commentary language">
+        <option value="en">EN</option>
+        <option value="es">ES</option>
+        <option value="fr">FR</option>
+        <option value="pt">PT</option>
+      </select>
+      <label class="sr-only" for="access-select">Accessibility broadcast mode</label>
+      <select id="access-select" class="control-select mode-select" title="accessibility mode">
+        <option value="stadium">🏟 Stadium</option>
+        <option value="audio">◉ Audio description</option>
+        <option value="silent">CC Silent + haptics</option>
+        <option value="low">↓ Low data</option>
+      </select>
+      <button id="sound-btn" class="ghost-btn" aria-pressed="false" title="crowd + commentary audio">🔇</button>
+    </div>
+  </header>
+
+  <section class="scoreboard">
+    <div class="team home">
+      <span id="home-code" class="team-code">—</span>
+      <span id="home-name" class="team-name">Home</span>
+    </div>
+    <div class="score-block">
+      <div id="score" class="score">0<span class="score-dash">–</span>0</div>
+      <div id="pens" class="pens" hidden></div>
+      <div class="clock-row"><span id="clock" class="clock">0′</span><span id="phase" class="phase-chip">Kick-off soon</span></div>
+    </div>
+    <div class="team away">
+      <span id="away-code" class="team-code">—</span>
+      <span id="away-name" class="team-name">Away</span>
+    </div>
+  </section>
+
+  <section class="stage">
+    <canvas id="pitch" class="pitch-canvas"></canvas>
+    <div id="flash" class="goal-flash"></div>
+    <div id="big-moment" class="big-moment" hidden></div>
+    <div id="live-caption" class="live-caption" role="status" aria-live="assertive"></div>
+  </section>
+
+  <section class="telemetry-strip" aria-label="measured broadcast telemetry">
+    <span>HANDLER→rAF <b id="latency-live">measuring…</b></span>
+    <span>RECEIVED <b id="bytes-live">0 KB</b></span>
+    <span>PROFILE <b id="profile-live">STANDARD</b></span>
+    <a id="evidence-link" href="#">public evidence ↗</a>
+  </section>
+
+  <section class="market-strip">
+    <div class="market-head">
+      <span>THE MARKET <i>· the world's sharpest crowd, live</i></span>
+      <span id="fever-label" class="fever-label">fever <b id="fever-val">—</b></span>
+    </div>
+    <div class="prob-bars">
+      <div class="prob home"><span class="prob-code" id="prob-home-code">HOM</span><div class="bar"><div id="bar-home" class="fill"></div></div><b id="prob-home">—</b><span id="arrow-home" class="arrow"></span></div>
+      <div class="prob draw"><span class="prob-code">DRAW</span><div class="bar"><div id="bar-draw" class="fill"></div></div><b id="prob-draw">—</b><span id="arrow-draw" class="arrow"></span></div>
+      <div class="prob away"><span class="prob-code" id="prob-away-code">AWY</span><div class="bar"><div id="bar-away" class="fill"></div></div><b id="prob-away">—</b><span id="arrow-away" class="arrow"></span></div>
+    </div>
+    <canvas id="river" class="river-canvas"></canvas>
+    <div class="river-caption">win-probability river · TxLINE consensus odds, de-margined</div>
+  </section>
+
+  <section class="stats-strip" id="stats-strip"></section>
+
+  <section class="feed-wrap">
+    <div class="feed-head">THE BOOTH <i>· play-by-play + market analyst</i></div>
+    <div id="feed" class="feed"></div>
+  </section>
+
+  <div id="card-overlay" class="card-overlay" hidden>
+    <div class="card-sheet">
+      <canvas id="card-canvas" width="1080" height="1350"></canvas>
+      <div class="card-actions">
+        <button id="card-share" class="solid-btn">Share</button>
+        <button id="card-save" class="ghost-btn">Save PNG</button>
+        <button id="card-close" class="ghost-btn">Close</button>
+      </div>
+      <div id="card-proof" class="card-proof"></div>
+    </div>
+  </div>
+</main>
+
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>

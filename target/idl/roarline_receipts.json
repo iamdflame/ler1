@@ -1,0 +1,793 @@
+{
+  "address": "6d1Se4dj5yw11sDeT2Uss7iNVxuecHRMazZ1wgB32HFy",
+  "metadata": {
+    "name": "roarline_receipts",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Proof-of-Broadcast receipts: TxLINE validation CPI + correction-linked package commitments"
+  },
+  "instructions": [
+    {
+      "name": "record_correction",
+      "docs": [
+        "A correction never erases history. It validates the corrected TxLINE",
+        "stat, creates a new receipt, and links both directions atomically."
+      ],
+      "discriminator": [
+        224,
+        81,
+        9,
+        23,
+        89,
+        120,
+        184,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "broadcaster",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "previous_receipt"
+          ]
+        },
+        {
+          "name": "previous_receipt",
+          "writable": true
+        },
+        {
+          "name": "receipt",
+          "writable": true
+        },
+        {
+          "name": "daily_scores_merkle_roots"
+        },
+        {
+          "name": "txoracle_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "ReceiptArgs"
+            }
+          }
+        },
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidateProof"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "record_moment",
+      "docs": [
+        "Verify a fixture/stat-key/value inside TxLINE, then store it beside a",
+        "broadcaster-supplied package commitment and bounded timing metadata.",
+        "The receipt PDA is immutable unless a later, separately verified",
+        "correction sets its `superseded_by` pointer."
+      ],
+      "discriminator": [
+        107,
+        135,
+        196,
+        160,
+        96,
+        95,
+        241,
+        106
+      ],
+      "accounts": [
+        {
+          "name": "broadcaster",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "receipt",
+          "writable": true
+        },
+        {
+          "name": "daily_scores_merkle_roots"
+        },
+        {
+          "name": "txoracle_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "ReceiptArgs"
+            }
+          }
+        },
+        {
+          "name": "proof",
+          "type": {
+            "defined": {
+              "name": "ValidateProof"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "MomentReceipt",
+      "discriminator": [
+        9,
+        50,
+        148,
+        217,
+        67,
+        217,
+        23,
+        250
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "MomentReceiptCreated",
+      "discriminator": [
+        176,
+        126,
+        242,
+        222,
+        75,
+        108,
+        185,
+        238
+      ]
+    },
+    {
+      "name": "MomentSuperseded",
+      "discriminator": [
+        221,
+        181,
+        195,
+        205,
+        17,
+        58,
+        4,
+        227
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "BadEventType",
+      "msg": "Unsupported broadcast event type"
+    },
+    {
+      "code": 6001,
+      "name": "CorrectionInstructionRequired",
+      "msg": "Correction event must use record_correction"
+    },
+    {
+      "code": 6002,
+      "name": "NotCorrection",
+      "msg": "Event is not a correction"
+    },
+    {
+      "code": 6003,
+      "name": "FixtureMismatch",
+      "msg": "Fixture does not match proof or previous receipt"
+    },
+    {
+      "code": 6004,
+      "name": "StatMismatch",
+      "msg": "Stat key does not match receipt"
+    },
+    {
+      "code": 6005,
+      "name": "ValueMismatch",
+      "msg": "Proven value does not match receipt"
+    },
+    {
+      "code": 6006,
+      "name": "EventStatMismatch",
+      "msg": "Event type or team does not match the proven stat key"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidOriginalValue",
+      "msg": "Original event value must be positive"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidCorrectionValue",
+      "msg": "Correction value must be non-negative and lower than the original"
+    },
+    {
+      "code": 6009,
+      "name": "EmptyPackageHash",
+      "msg": "Package hash cannot be zero"
+    },
+    {
+      "code": 6010,
+      "name": "EmptySourceHash",
+      "msg": "Source ledger hash cannot be zero"
+    },
+    {
+      "code": 6011,
+      "name": "ReactionBeforeSource",
+      "msg": "Reaction timestamp precedes source timestamp"
+    },
+    {
+      "code": 6012,
+      "name": "SourceTimestampOutsideBatch",
+      "msg": "Source timestamp is outside the proven TxLINE batch"
+    },
+    {
+      "code": 6013,
+      "name": "ReactionTimestampOutsideWindow",
+      "msg": "Reaction timestamp is outside the allowed Solana clock window"
+    },
+    {
+      "code": 6014,
+      "name": "BadOracleProgram",
+      "msg": "TxLINE program is not an allowlisted deployment"
+    },
+    {
+      "code": 6015,
+      "name": "BadRootsOwner",
+      "msg": "Daily roots account is not owned by the supplied TxLINE program"
+    },
+    {
+      "code": 6016,
+      "name": "NoOracleVerdict",
+      "msg": "TxLINE returned no validation verdict"
+    },
+    {
+      "code": 6017,
+      "name": "OracleRejected",
+      "msg": "TxLINE rejected the exact-value predicate"
+    },
+    {
+      "code": 6018,
+      "name": "AlreadySuperseded",
+      "msg": "Previous receipt already has a correction"
+    },
+    {
+      "code": 6019,
+      "name": "WrongBroadcaster",
+      "msg": "Only the original broadcaster may correct this receipt"
+    },
+    {
+      "code": 6020,
+      "name": "UnexpectedPreviousHash",
+      "msg": "Original moments cannot name a previous package"
+    },
+    {
+      "code": 6021,
+      "name": "MissingPreviousHash",
+      "msg": "Corrections must name the previous package"
+    },
+    {
+      "code": 6022,
+      "name": "PreviousPackageMismatch",
+      "msg": "Previous receipt does not match the package being superseded"
+    },
+    {
+      "code": 6023,
+      "name": "WrongCorrectionTarget",
+      "msg": "Correction targets the wrong receipt event type"
+    },
+    {
+      "code": 6024,
+      "name": "CorrectionOutOfOrder",
+      "msg": "Correction must follow the original receipt"
+    },
+    {
+      "code": 6025,
+      "name": "ProofTimestampMismatch",
+      "msg": "Proof timestamp must equal the batch minimum timestamp"
+    },
+    {
+      "code": 6026,
+      "name": "BadProofTimestamp",
+      "msg": "Proof timestamp is outside the supported daily-root range"
+    },
+    {
+      "code": 6027,
+      "name": "BadRootsAddress",
+      "msg": "Daily roots account is not the PDA for the proof day"
+    },
+    {
+      "code": 6028,
+      "name": "OracleNotExecutable",
+      "msg": "TxLINE program account is not executable"
+    }
+  ],
+  "types": [
+    {
+      "name": "MomentReceipt",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "broadcaster",
+            "type": "pubkey"
+          },
+          {
+            "name": "fixture_id",
+            "docs": [
+              "CPI-bound to `fixture_summary.fixture_id`."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "seq",
+            "docs": [
+              "Broadcaster-supplied source sequence; corrections must increase it."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "event_type",
+            "docs": [
+              "Broadcaster classification, constrained to the proven stat-key family."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "team",
+            "docs": [
+              "Broadcaster participant classification: 1 = TxLINE Participant 1,",
+              "2 = TxLINE Participant 2. It must match the stat key proven by the CPI."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "stat_key",
+            "docs": [
+              "CPI-bound to `stat_to_prove.key`."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "event_value",
+            "docs": [
+              "CPI-bound to `stat_to_prove.value` and exact-equality validation."
+            ],
+            "type": "i32"
+          },
+          {
+            "name": "source_ts",
+            "docs": [
+              "Broadcaster-supplied source timestamp, constrained to the proven",
+              "TxLINE batch's min/max range; not proven as an exact event timestamp."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "reaction_ts",
+            "docs": [
+              "Broadcaster-supplied package timestamp, constrained to be after",
+              "`source_ts` and near the Solana Clock at receipt creation."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "proof_ts",
+            "docs": [
+              "TxLINE batch minTimestamp used by validate_stat."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "package_hash",
+            "docs": [
+              "Broadcaster-supplied SHA-256 commitment. Address derivation binds the",
+              "receipt to these bytes; this program does not recompute off-chain data."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "source_entry_hash",
+            "docs": [
+              "Broadcaster-supplied source-ledger commitment; not interpreted on chain."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "previous_receipt",
+            "type": "pubkey"
+          },
+          {
+            "name": "superseded_by",
+            "type": "pubkey"
+          },
+          {
+            "name": "txoracle_program",
+            "type": "pubkey"
+          },
+          {
+            "name": "daily_scores_merkle_roots",
+            "type": "pubkey"
+          },
+          {
+            "name": "verified",
+            "docs": [
+              "True only after TxLINE returned the exact one-byte validation verdict;",
+              "it does not independently verify broadcaster-supplied metadata above."
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MomentReceiptCreated",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "receipt",
+            "type": "pubkey"
+          },
+          {
+            "name": "broadcaster",
+            "type": "pubkey"
+          },
+          {
+            "name": "fixture_id",
+            "type": "i64"
+          },
+          {
+            "name": "seq",
+            "type": "u32"
+          },
+          {
+            "name": "event_type",
+            "type": "u8"
+          },
+          {
+            "name": "team",
+            "type": "u8"
+          },
+          {
+            "name": "event_value",
+            "type": "i32"
+          },
+          {
+            "name": "source_ts",
+            "type": "i64"
+          },
+          {
+            "name": "reaction_ts",
+            "type": "i64"
+          },
+          {
+            "name": "package_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "previous_receipt",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MomentSuperseded",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "previous_receipt",
+            "type": "pubkey"
+          },
+          {
+            "name": "correction_receipt",
+            "type": "pubkey"
+          },
+          {
+            "name": "fixture_id",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ProofNode",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "is_right_sibling",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReceiptArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fixture_id",
+            "docs": [
+              "CPI-bound fixture identifier."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "seq",
+            "docs": [
+              "Broadcaster metadata; only relative correction ordering is enforced."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "event_type",
+            "docs": [
+              "Broadcaster classification constrained by `stat_key` and `team`."
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "team",
+            "type": "u8"
+          },
+          {
+            "name": "stat_key",
+            "docs": [
+              "CPI-bound stat coordinates and exact value."
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "event_value",
+            "type": "i32"
+          },
+          {
+            "name": "source_ts",
+            "docs": [
+              "Broadcaster timestamps with batch and Solana Clock bounds."
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "reaction_ts",
+            "type": "i64"
+          },
+          {
+            "name": "package_hash",
+            "docs": [
+              "Broadcaster commitments; package bytes are not supplied to the program."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "source_entry_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "previous_package_hash",
+            "docs": [
+              "Zero for an original moment; exact prior package SHA-256 for corrections."
+            ],
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ScoreStat",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "key",
+            "type": "u32"
+          },
+          {
+            "name": "value",
+            "type": "i32"
+          },
+          {
+            "name": "period",
+            "type": "i32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ScoresBatchSummary",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "fixture_id",
+            "type": "i64"
+          },
+          {
+            "name": "update_stats",
+            "type": {
+              "defined": {
+                "name": "ScoresUpdateStats"
+              }
+            }
+          },
+          {
+            "name": "events_sub_tree_root",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ScoresUpdateStats",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "update_count",
+            "type": "i32"
+          },
+          {
+            "name": "min_timestamp",
+            "type": "i64"
+          },
+          {
+            "name": "max_timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StatTerm",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "stat_to_prove",
+            "type": {
+              "defined": {
+                "name": "ScoreStat"
+              }
+            }
+          },
+          {
+            "name": "event_stat_root",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "stat_proof",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "ProofNode"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ValidateProof",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proof_ts",
+            "type": "i64"
+          },
+          {
+            "name": "fixture_summary",
+            "type": {
+              "defined": {
+                "name": "ScoresBatchSummary"
+              }
+            }
+          },
+          {
+            "name": "fixture_proof",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "ProofNode"
+                }
+              }
+            }
+          },
+          {
+            "name": "main_tree_proof",
+            "type": {
+              "vec": {
+                "defined": {
+                  "name": "ProofNode"
+                }
+              }
+            }
+          },
+          {
+            "name": "stat_a",
+            "type": {
+              "defined": {
+                "name": "StatTerm"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

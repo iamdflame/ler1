@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "fixtureId": 18237038,
+  "mode": "authentic-replay",
+  "sourcePackageSha256": "83cc7c4266f44a2272f80deb4bcecbc97be997939ac8bc9041b233728df3c25c",
+  "run": {
+    "startedAt": "2026-07-19T12:43:30.654Z",
+    "finishedAt": "2026-07-19T12:45:00.655Z",
+    "elapsedMs": 90001,
+    "environment": "Ubuntu 24.04 dev container; Chromium through a forwarded localhost origin",
+    "connections": [
+      { "profile": "low", "frameAcknowledgments": false },
+      { "profile": "standard", "frameAcknowledgments": true }
+    ],
+    "qualification": [
+      "browserEventToAnimationFrame measures the browser SSE handler to the next requestAnimationFrame callback; it is not visual paint",
+      "serverWriteToFrameAck uses the server monotonic clock and includes SSE delivery, browser handling, the animation-frame callback, and the HTTP acknowledgment back to the server",
+      "sourceTimestampToIngest is intentionally omitted for this historical director cut",
+      "all frame samples require an active SSE telemetry token and the exact package written to that client"
+    ]
+  },
+  "events": {
+    "scoreFrames": 48,
+    "oddsFrames": 8,
+    "ledgerEntries": 56,
+    "stateBroadcasts": 48,
+    "signalBroadcasts": 90,
+    "commentaryBroadcasts": 21,
+    "momentPackages": 26,
+    "proofRecords": 3
+  },
+  "listeners": {
+    "connections": 2,
+    "peakConcurrent": 2
+  },
+  "latencyMs": {
+    "feedIngestToPackage": { "samples": 26, "p50": 0, "p95": 1, "max": 1 },
+    "browserEventToAnimationFrame": { "samples": 26, "p50": 1.3, "p95": 2.8, "max": 3.5 },
+    "serverWriteToFrameAck": { "samples": 26, "p50": 208, "p95": 413.3, "max": 580.6 },
+    "sourceTimestampToIngest": { "samples": 0, "p50": null, "p95": null, "max": null }
+  },
+  "bandwidth": {
+    "standardBytesProduced": 76450,
+    "lowDataBytesProduced": 44504,
+    "standardKiB": 74.66,
+    "lowDataKiB": 43.46,
+    "reductionPercent": 41.8,
+    "measuredClientBytes": { "standard": 76732, "low": 44929 }
+  },
+  "ledger": {
+    "head": "9b9bed363aab3a98e9bcaf94a0bbe16f6d21c7be7c8c2201db77d023f06f7e16",
+    "duplicatesRejected": 0,
+    "staleRejected": 0,
+    "gapPolicy": "expected-director-cut-omissions"
+  },
+  "proofEvidence": {
+    "status": "archived-proof-log-record",
+    "proofLogCommit": "2f10829f4a4e95c571a72b43eada1088c63642bd",
+    "proofLogSha256": "6810cad65784e3a1c79b642a33bb6642ca655e88ab4483fc2aca828bf0f1ff46",
+    "currentRpcVerified": false,
+    "rpcAvailable": false,
+    "customReceiptsConfirmed": 0,
+    "records": [
+      {
+        "type": "GOAL",
+        "packageHash": "a14c5149a1f86c3bb9092b962f5589c7b842d4346a91e8e96188702afcc30e0f",
+        "txSignature": "25GkSpdG4zciFc9z4cLUtWmowh9fYrH6YgzTb5GF8eDxZarXbLeDofvQPTK58MuHffE2HFiuAURhAj8zXefFZsKD"
+      },
+      {
+        "type": "GOAL",
+        "packageHash": "987ce43dab9d2fcbee8f36db57d16945f64c920c666025a5eaa3bccd5ffbf1b0",
+        "supersededBy": "e969233645032ea34d3d4d908f4dbcb789b8ed3fb45e9105f3660440fc2c4beb",
+        "txSignature": "34ZXkqc9F44UfeLqqzWhCfshJugDCJsuWTU6SMVduKBh5LBvMdNo3XmvTchrfBZSswCPRXwJyH7XkkpzgyjQVxr"
+      },
+      {
+        "type": "GOAL_REVOKED",
+        "packageHash": "e969233645032ea34d3d4d908f4dbcb789b8ed3fb45e9105f3660440fc2c4beb",
+        "supersedes": "987ce43dab9d2fcbee8f36db57d16945f64c920c666025a5eaa3bccd5ffbf1b0",
+        "txSignature": "4EVqXiQztFnDjDPTLyFtfeHRjazNYts9ZYGzHz1cQ8enisUpxPZsdhAVfRsdN2dFfGPe7jaJ2Z6dAaDFvGo1hdWh"
+      }
+    ]
+  },
+  "momentPackageHashes": [
+    "d8745d63c428cab81b8dd4f8827a49a83c0a349288f7dbd4bd00c79568df861c",
+    "82daabe6ba3e7dcbf2bafaea85bd323d1d622e5e9a4c5c1cc22cc6b9d779601f",
+    "d472cfe59da77db3c5d63e12998e66d07ff319b4b3b377ebaf29c60c121f7ae3",
+    "0b418aedfef8c2571fa0b12028dc51c1bc966042633055191afd13a11c04c429",
+    "a960778884a3c3f82d345d41b081f9f962aa90db9f304ce95b174e23d489f782",
+    "a14c5149a1f86c3bb9092b962f5589c7b842d4346a91e8e96188702afcc30e0f",
+    "0ac6f8add0385e6f59c2d8ddd624e18e4d144dcfe29aad0f296c59ff065bd1c5",
+    "c15a1aba3872ee3ffe11390c2ad5d48eda59ae5d6346cd27bb86506e6b302554",
+    "007cc5141dd2059911c48ee97bee6e948461f6aaeee136428263d846a1d671b1",
+    "c8cd9dcc5bfe669022dbd94073a177817704ca2741077bf2c0eaefe0b933778e",
+    "987ce43dab9d2fcbee8f36db57d16945f64c920c666025a5eaa3bccd5ffbf1b0",
+    "ef19ad357d97e1560a1ebb701a9b494e41c2693b9441b31f9a3593f396508bd7",
+    "6ecbd655a35ca123eaa2d5073e9160e1c64452bdc70b3ba2ccf74849b9f46dbc",
+    "71e102d197381c6d7630ae57eb5354812fba7640bb3e8a45176ef6ce09470e70",
+    "69721313b4fc9d52b650cbffa8faa93afdabc05ff89ac8679eff7a5540f74d59",
+    "73438aa05b772bf985bab6303353d784c7e28898eeedb631627d2b15ae1e4e28",
+    "f428513f94fe7e87e25e2ba44cd9e1ebf978957352a528c9ccdb854c2a88a2a3",
+    "afa4b75b5cebf71f997845abead9e399bb133f9cd73b4e4cc26194a539852ba2",
+    "9004b939dad1a4f45cc0b9bf5da06cebb69189df8a40ae6d87442754185ddc9e",
+    "e969233645032ea34d3d4d908f4dbcb789b8ed3fb45e9105f3660440fc2c4beb",
+    "83e25dc0caf1e5c98d5ec3a286ec9add6e97a81745febe6084d42edeb4779b5b",
+    "31372df25dc65a70dfc75ee4e5c89a4d7006778a052d5327f69028b59665207d",
+    "8344a6192a90ff7c6cef28ec351c20223b13b5bece579cd2e8a5196bf3d6d770",
+    "9befc98ae9684452284b7905b3f40c9e250496238c4a4414df3c7ed515bc5561",
+    "089cdaae856c0ff532a333938dddc0ae943f0918117cb96a26859638f66aba1f",
+    "e7c4f7e4bac1bfb1253611c6b0ca94f85eec6c148920a4fdb56bfb17b7a054a1"
+  ]
+}
